@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <getopt.h>
 
-void parse_percentage(unsigned char *result, const int percentage) {
+const int width = 104;
+
+void parse_percentage(uint8_t *result, const int percentage) {
 	int temp_per = percentage + 2;
         int counter = 0;
 
@@ -47,8 +50,6 @@ int main(int argc, char *argv[]) {
             height = 8;
         }
 
-        int width = 104;
-
 	printf("%s %d\n", "#define xbmbar_width", width);
 	printf("%s %d\n", "#define xbmbar_height", height);
 	printf("%s\n", "static unsigned char xbmbar_bits[] = {");
@@ -61,7 +62,7 @@ int main(int argc, char *argv[]) {
                 printf("\n");
 	}
         
-	unsigned char *bar = calloc(1, width);
+	uint8_t *bar = calloc(1, width);
 	parse_percentage(bar, percentage);
 
 	for (int i = 0; i < height - 4; i++) {
