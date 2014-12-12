@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
 	while ((opt = getopt(argc, argv, "hp:y:")) != -1) {
 		switch (opt) {
 			case 'h':
-				printf("xbmbar [-h] [-x WIDTH] [-h HEIGHT] [-p PERCENTAGE]\n");
+				printf("xbmbar [-h]  [-y HEIGHT] [-p PERCENTAGE]\n");
 				exit(0);
 			case 'p':
 				percentage = atoi(optarg);
