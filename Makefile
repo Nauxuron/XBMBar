@@ -1,5 +1,5 @@
 CC      = gcc
-CFLAGS  = -Wall -Wextra -std=c99
+CFLAGS  = -pedantic -Wall -Wextra -std=c99
 CDFLAGS = -g
 SRC     = xbmbar.c
 TARGET  = xbmbar
@@ -14,3 +14,5 @@ compile:
 
 clean:
 	rm -f $(TARGET)
+
+.PHONY: all debug compile clean
