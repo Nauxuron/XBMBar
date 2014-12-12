@@ -19,6 +19,39 @@ void parse_percentage(uint8_t *result, const int percentage) {
         result[12] |= 0xc0;
 }
 
+void print_xbm_file(uint8_t *bar, int height) {
+        printf("%s %d\n", "#define xbmbar_width", width);
+	printf("%s %d\n", "#define xbmbar_height", height);
+	printf("%s\n", "static unsigned char xbmbar_bits[] = {");
+
+	for (int i = 0; i < 2; i++) {
+                printf("\t");
+                for (int j = 0; j < width/8; j++) {
+                    printf("%s, ", "0xff");
+                }
+                printf("\n");
+	}
+
+        for (int i = 0; i < height - 4; i++) {
+                printf("\t");
+		for (int j = 0; j < width/8; j++) {
+			printf("0x%02x, ", bar[j]);
+		}
+		printf("\n");
+	}
+    
+        printf("\t");
+        for (int j = 0; j < width/8; j++) {
+                printf("%s, ", "0xff");
+        }
+        printf("\n\t");
+        for (int j = 0; j < (width/8 - 1); j++) {
+                printf("%s, ", "0xff");
+        }
+        printf("0xff");
+	printf(" %s\n", "};");
+}
+
 int main(int argc, char *argv[]) {
 	char opt;
 	int percentage, height = 8;
@@ -49,42 +82,10 @@ int main(int argc, char *argv[]) {
             fprintf(stderr, "%s: %s", argv[0], "Warning: height cannot be smaller than 5. Setting to default of 8\n");
             height = 8;
         }
-
-	printf("%s %d\n", "#define xbmbar_width", width);
-	printf("%s %d\n", "#define xbmbar_height", height);
-	printf("%s\n", "static unsigned char xbmbar_bits[] = {");
-
-	for (int i = 0; i < 2; i++) {
-                printf("\t");
-                for (int j = 0; j < width/8; j++) {
-                    printf("%s, ", "0xff");
-                }
-                printf("\n");
-	}
         
 	uint8_t *bar = calloc(1, width);
 	parse_percentage(bar, percentage);
-
-	for (int i = 0; i < height - 4; i++) {
-                printf("\t");
-		for (int j = 0; j < width/8; j++) {
-			printf("0x%02x, ", bar[j]);
-		}
-		printf("\n");
-	}
-    
+	print_xbm_file(bar, height);
         free(bar);
-
-        printf("\t");
-        for (int j = 0; j < width/8; j++) {
-                printf("%s, ", "0xff");
-        }
-        printf("\n\t");
-        for (int j = 0; j < (width/8 - 1); j++) {
-                printf("%s, ", "0xff");
-        }
-        printf("0xff");
-	printf(" %s\n", "};");
-
 	return 0;
 }
