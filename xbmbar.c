@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
 		case 'y':
 			height = atoi(optarg);
 			break;
-	}
+		}
 	}
 	if (perc_flag != 1) {
 		fprintf(stderr, "%s: %s", argv[0], "Try 'xbmbar -h' for more information.\n");
