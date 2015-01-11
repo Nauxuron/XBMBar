@@ -8,48 +8,48 @@ const int width = 104;
 
 void parse_percentage(uint8_t *result, const int percentage) {
 	int temp_per = percentage + 2;
-		int counter = 0;
+	int counter = 0;
 
 	while (temp_per >= 8) {
 		result[counter] |= 0xff;
 		temp_per -= 8;
-				counter++;
+		counter++;
 	}
 
-		result[counter] |= (1 << temp_per) - 1;
-		result[12] |= 0xc0;
+	result[counter] |= (1 << temp_per) - 1;
+	result[12] |= 0xc0;
 }
 
 void print_xbm_file(uint8_t *bar, int height) {
-		printf("%s %d\n", "#define xbmbar_width", width);
+	printf("%s %d\n", "#define xbmbar_width", width);
 	printf("%s %d\n", "#define xbmbar_height", height);
 	printf("%s\n", "static unsigned char xbmbar_bits[] = {");
 
 	for (int i = 0; i < 2; i++) {
-				printf("\t");
-				for (int j = 0; j < width/8; j++) {
-					printf("%s, ", "0xff");
-				}
-				printf("\n");
+		printf("\t");
+		for (int j = 0; j < width/8; j++) {
+			printf("%s, ", "0xff");
+		}
+		printf("\n");
 	}
 
-		for (int i = 0; i < height - 4; i++) {
-				printf("\t");
+	for (int i = 0; i < height - 4; i++) {
+		printf("\t");
 		for (int j = 0; j < width/8; j++) {
 			printf("0x%02x, ", bar[j]);
 		}
 		printf("\n");
 	}
 	
-		printf("\t");
-		for (int j = 0; j < width/8; j++) {
-				printf("%s, ", "0xff");
-		}
-		printf("\n\t");
-		for (int j = 0; j < (width/8 - 1); j++) {
-				printf("%s, ", "0xff");
-		}
-		printf("0xff");
+	printf("\t");
+	for (int j = 0; j < width/8; j++) {
+		printf("%s, ", "0xff");
+	}
+	printf("\n\t");
+	for (int j = 0; j < (width/8 - 1); j++) {
+		printf("%s, ", "0xff");
+	}
+	printf("0xff");
 	printf(" %s\n", "};");
 }
 
@@ -88,6 +88,6 @@ int main(int argc, char *argv[]) {
 	uint8_t *bar = calloc(1, width);
 	parse_percentage(bar, percentage);
 	print_xbm_file(bar, height);
-		free(bar);
+	free(bar);
 	return 0;
 }
